@@ -1,0 +1,63 @@
+.navbar{
+	padding: 21px 14px 21px 14px;
+}
+.carousel .carousel-inner:hover{
+	box-shadow: rgba(0,0,0,0.5);
+	transform:scale(1.01);
+}
+.profile-photo{
+	width: 80px;
+	height: 80px;
+}
+.tag-link{
+	display: inline-block;
+	padding: 4px 6px;
+	text-decoration: none;
+	background-color: whitesmoke;
+	color: black;
+	margin-bottom: 5px;
+}
+.tag-link:hover{
+	text-decoration: none;
+	background-color: grey;
+	color: black;
+}
+.sidebar-item {
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: calc(100% - 400px);
+}
+.make-me-sticky {
+  	position: -webkit-sticky;
+	position: sticky;
+	top: 0;
+}
+.footer {
+   height: 100px;
+   left: 0;
+   bottom: 0;
+   width: 100%;
+   background-color: white;
+   color: white;
+}
+.footer div{
+	height: 100%;
+}
+.footer a{
+	padding: 8px 12px;
+	background-color: whitesmoke;
+	color: black;
+	text-decoration: none;
+	display: inline-block;
+	margin: 10px;
+}
+.footer a:hover{
+	background-color:gray;
+}
+.modal-dialog{
+	width: 350px;
+}
+.modal-content{
+	border-radius: 0px;
+}
