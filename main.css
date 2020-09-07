@@ -55,9 +55,6 @@
 .footer a:hover{
 	background-color:gray;
 }
-.modal-dialog{
-	width: 350px;
-}
 .modal-content{
 	border-radius: 0px;
 }
