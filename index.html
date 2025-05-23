@@ -62,84 +62,7 @@
 	</nav>
 	<div class="container">
 		 <div class="row gallery">
-		 	<div class="col-lg-4">
-		 		<div>
-					<img src="https://milo.bootlab.io/img/articles/18.jpg" class="img-fluid mb-3" alt="Responsive image">
-					<div class="container mb-4">
-						<div class="container-fluid">
-							Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-							tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-							quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-							consequat. 
-						</div>
-						<hr>
-					</div>
-				</div>
-				<div>
-			 		<img src="https://milo.bootlab.io/img/articles/3.jpg" class="img-fluid mb-3" alt="Responsive image">
-					<div class="container mb-4">
-						<div class="container-fluid">
-							Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-							tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-							quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-							consequat. 
-						</div>
-						<hr>
-					</div>
-				</div>
-			</div>
-			<div class="col-lg-4">
-				<div>
-			 		<img src="https://milo.bootlab.io/img/articles/3.jpg" class="img-fluid mb-3" alt="Responsive image">
-					<div class="container mb-4">
-						<div class="container-fluid">
-							Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-							tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-							quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-							consequat. 
-						</div>
-						<hr>
-					</div>
-				</div>
-				<div>
-					<img src="https://milo.bootlab.io/img/articles/18.jpg" class="img-fluid mb-3" alt="Responsive image">
-					<div class="container mb-4">
-						<div class="container-fluid">
-							Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-							tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-							quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-							consequat. 
-						</div>
-						<hr>
-					</div>
-				</div>
-			</div>
-			<div class="col-lg-4">
-		 		<div>
-					<img src="https://milo.bootlab.io/img/articles/18.jpg" class="img-fluid mb-3" alt="Responsive image">
-					<div class="container mb-4">
-						<div class="container-fluid">
-							Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-							tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-							quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-							consequat. 
-						</div>
-						<hr>
-					</div>
-				</div>
-				<div>
-			 		<img src="https://milo.bootlab.io/img/articles/3.jpg" class="img-fluid mb-3" alt="Responsive image">
-					<div class="container mb-4">
-						<div class="container-fluid">
-							Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-							tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-							quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-							consequat. 
-						</div>
-						<hr>
-					</div>
-				</div>
-			</div>
+		 	<!-- Blog posts will be loaded here by JavaScript -->
 		 </div>
 		<hr>
 	</div>
@@ -150,5 +73,54 @@
 				<a href="#">Twitter</a>
 		</div>
 	</footer>
+	<script>
+		document.addEventListener('DOMContentLoaded', function() {
+			const gallery = document.querySelector('.gallery');
+
+			fetch('/api/posts')
+				.then(response => {
+					if (!response.ok) {
+						throw new Error('Network response was not ok ' + response.statusText);
+					}
+					return response.json();
+				})
+				.then(posts => {
+					posts.forEach(post => {
+						const postCol = document.createElement('div');
+						postCol.className = 'col-lg-4 mb-4';
+
+						const postCard = document.createElement('div');
+						// No specific card class, but an inner div to group content as per original structure
+
+						const contentContainer = document.createElement('div');
+						contentContainer.className = 'container mb-4';
+
+						const contentFluid = document.createElement('div');
+						contentFluid.className = 'container-fluid';
+
+						const titleElement = document.createElement('h4');
+						titleElement.textContent = post.title;
+
+						const contentElement = document.createElement('p');
+						contentElement.textContent = post.content;
+
+						contentFluid.appendChild(titleElement);
+						contentFluid.appendChild(contentElement);
+						contentContainer.appendChild(contentFluid);
+						contentContainer.appendChild(document.createElement('hr')); 
+						
+						postCard.appendChild(contentContainer);
+						postCol.appendChild(postCard);
+						gallery.appendChild(postCol);
+					});
+				})
+				.catch(error => {
+					console.error('There has been a problem with your fetch operation:', error);
+					const errorElement = document.createElement('p');
+					errorElement.textContent = 'Failed to load posts. See console for details.';
+					gallery.appendChild(errorElement);
+				});
+		});
+	</script>
 </body>
 </html>
