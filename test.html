@@ -15,7 +15,7 @@
 
 </head>
 <body>
-	<nav class="navbar navbar-expand-lg navbar-light border-bottom mb-4">
+	<nav class="navbar navbar-expand-lg navbar-light mb-4">
 		<a href="#" class="navbar-brand text-center d-block d-lg-none">City</a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
 			menu
@@ -222,5 +222,132 @@
 				<a href="#">Twitter</a>
 		</div>
 	</footer>
+	<script>
+    const storyData = {
+      title: "Baku City Adventures (Mock Data)",
+      carouselImages: [
+        "https://media.tacdn.com/media/attractions-splice-spp-674x446/06/96/94/95.jpg", // Existing image
+        "https://cf.bstatic.com/images/hotel/max1024x768/133/133586080.jpg",   // Existing image
+        "https://azterra.az/wp-content/uploads/nightbaku_15-800x450.jpg?x91083" // Existing image
+      ],
+      mainContent: `
+        <p>This is the dynamic main story about Baku, loaded from mock data. It replaces the old Lorem Ipsum text.</p>
+        <p>Baku, the capital of Azerbaijan, is a fascinating city that blends ancient history with stunning modern architecture. From the medieval walls of the Old City (Icherisheher) to the futuristic Flame Towers, Baku offers a unique experience for every traveler.</p>
+      `
+    };
+
+    const mockComments = [
+      { username: "Traveler123 (Mock)", text: "Great article! Baku looks amazing. The mock comments are working!" },
+      { username: "LocalGuide (Mock)", text: "Nice overview. Don't forget to try the local cuisine when you visit!" },
+      { username: "HistoryBuff (Mock)", text: "The Old City is a UNESCO World Heritage site for a reason. So much to explore." }
+    ];
+
+    function renderStory() {
+      // Set title
+      const storyTitleElement = document.querySelector('.col-lg-9 .container.mb-4 h1');
+      if (storyTitleElement) {
+        storyTitleElement.textContent = storyData.title;
+      } else {
+        console.error("Story title element not found.");
+      }
+
+      // Populate Carousel
+      const carouselInner = document.querySelector('#carousel .carousel-inner');
+      const carouselIndicators = document.querySelector('#carousel .carousel-indicators');
+      
+      if (carouselInner && carouselIndicators) {
+        carouselInner.innerHTML = ''; // Clear static images
+        carouselIndicators.innerHTML = ''; // Clear static indicators
+
+        storyData.carouselImages.forEach((src, index) => {
+          const itemDiv = document.createElement('div');
+          itemDiv.className = 'carousel-item' + (index === 0 ? ' active' : '');
+          const img = document.createElement('img');
+          img.src = src;
+          img.className = 'd-block w-100'; // Removed h-100 to let max-height control
+          img.alt = 'Carousel image ' + (index + 1);
+          itemDiv.appendChild(img);
+          carouselInner.appendChild(itemDiv);
+
+          const indicatorLi = document.createElement('li');
+          indicatorLi.setAttribute('data-target', '#carousel');
+          indicatorLi.setAttribute('data-slide-to', index.toString());
+          if (index === 0) {
+            indicatorLi.className = 'active';
+          }
+          carouselIndicators.appendChild(indicatorLi);
+        });
+      } else {
+        console.error("Carousel inner or indicators not found.");
+      }
+
+      // Populate Main Content
+      // The main content is the first .container-fluid after the carousel's container div
+      const carouselContainer = document.querySelector('.col-lg-9 .container.mb-4'); // This is the div holding the h1 and the carousel
+      if (carouselContainer) {
+        const mainContentElement = carouselContainer.nextElementSibling; // Should be the first .container-fluid
+        if (mainContentElement && mainContentElement.classList.contains('container-fluid')) {
+          mainContentElement.innerHTML = storyData.mainContent;
+        } else {
+          console.error("Main content element not found or is not a .container-fluid directly after carousel container.");
+        }
+      } else {
+          console.error("Carousel container for main content lookup not found.");
+      }
+    }
+
+    function renderComments() {
+      // The comments section is within .col-lg-9.
+      // The main content is .col-lg-9 .container.mb-4 + .container-fluid
+      // Then there is an <hr>
+      // Then the comments container-fluid
+      const mainContentContainer = document.querySelector('.col-lg-9 .container.mb-4');
+      let commentsSectionContainer = null;
+      if (mainContentContainer && mainContentContainer.nextElementSibling && mainContentContainer.nextElementSibling.nextElementSibling) {
+        commentsSectionContainer = mainContentContainer.nextElementSibling.nextElementSibling.nextElementSibling;
+         // .col-lg-9 .container.mb-4 (carousel) -> .container-fluid (main story) -> <hr> -> .container-fluid (comments + form)
+      }
+
+
+      if (commentsSectionContainer && commentsSectionContainer.classList.contains('container-fluid')) {
+        // Clear existing static comments (but not the 'size of comment' h3 or the form)
+        const existingCommentBlocks = commentsSectionContainer.querySelectorAll('.bg-light.container.mb-3');
+        existingCommentBlocks.forEach(block => block.remove());
+
+        mockComments.forEach(comment => {
+          const commentDiv = document.createElement('div');
+          commentDiv.className = 'bg-light container mb-3'; // Re-using existing classes for styling
+          commentDiv.innerHTML = `
+            <div class="row">
+              <div class="pt-4 col-3 col-lg-2">
+                <img src="https://www.w3schools.com/w3css/img_avatar3.png" alt="profile photo" class="img-fluid rounded-circle profile-photo">
+              </div>
+              <div class="p-4 col-9 col-lg-10">
+                <h5>${comment.username}</h5>
+                <p>${comment.text}</p>
+                <div class="text-right"><a href="#">reply</a></div>
+              </div>
+            </div>
+          `;
+          // Insert before the comment form
+          // The form container has class 'bl-light container mb-4'
+          const formContainer = commentsSectionContainer.querySelector('.bl-light.container.mb-4');
+          if (formContainer) {
+              commentsSectionContainer.insertBefore(commentDiv, formContainer);
+          } else { // Fallback if form isn't found, just append (or insert before last element if that's the form implicitly)
+              console.warn("Comment form container with class .bl-light.container.mb-4 not found. Appending comments.");
+              commentsSectionContainer.appendChild(commentDiv);
+          }
+        });
+      } else {
+        console.error("Comments section container not found. Expected structure: .col-lg-9 > .container.mb-4 (for carousel) + .container-fluid (main story) + hr + .container-fluid (for comments).");
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      renderStory();
+      renderComments();
+    });
+  </script>
 </body>
 </html>

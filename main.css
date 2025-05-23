@@ -1,6 +1,53 @@
-.navbar{
-	padding: 21px 14px 21px 14px;
+:root {
+  --primary-color: #333; /* Dark gray for text */
+  --secondary-color: #777; /* Lighter gray for secondary text */
+  --accent-color: #007bff; /* Bootstrap primary blue as an accent */
+  --background-color: #fff; /* White background */
+  --light-gray-bg: #f8f9fa; /* Light gray for backgrounds like comments */
+  --border-color: #dee2e6; /* Standard border color */
+
+  --font-primary: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-secondary: 'Georgia', serif; /* Example for headings or accents */
+
+  --base-font-size: 16px;
+  --base-line-height: 1.6;
+
+  --spacing-unit: 1rem; /* Base unit for margins/padding */
 }
+
+body {
+  font-family: var(--font-primary);
+  font-size: var(--base-font-size);
+  line-height: var(--base-line-height);
+  color: var(--primary-color);
+  background-color: var(--background-color);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-secondary); /* Or var(--font-primary) if preferred */
+  margin-top: calc(var(--spacing-unit) * 1.5);
+  margin-bottom: var(--spacing-unit);
+  font-weight: 500; /* A bit lighter than default bold */
+}
+
+.navbar{
+	padding: var(--spacing-unit) calc(var(--spacing-unit) * 1.5);
+}
+
+.navbar .navbar-brand {
+  font-size: 1.5rem; /* Example */
+  font-weight: bold;
+  color: var(--accent-color); /* Example */
+}
+
+.navbar .nav-link {
+  color: var(--secondary-color);
+  padding: 0.5rem 1rem; /* Adjust as needed */
+}
+.navbar .nav-link:hover, .navbar .nav-link.active { /* Assuming an 'active' class might be used */
+  color: var(--accent-color);
+}
+
 .carousel .carousel-inner:hover{
 	box-shadow: rgba(0,0,0,0.5);
 	transform:scale(1.01);
@@ -8,19 +55,23 @@
 .profile-photo{
 	width: 80px;
 	height: 80px;
+  border: 2px solid var(--border-color);
 }
 .tag-link{
 	display: inline-block;
-	padding: 4px 6px;
+	padding: 0.25rem 0.5rem;
 	text-decoration: none;
-	background-color: whitesmoke;
-	color: black;
+	background-color: var(--light-gray-bg);
+	color: var(--primary-color);
 	margin-bottom: 5px;
+  border: 1px solid var(--border-color);
+  border-radius: 0.2rem;
 }
 .tag-link:hover{
 	text-decoration: none;
-	background-color: grey;
-	color: black;
+	background-color: var(--accent-color);
+	color: var(--background-color);
+  border-color: var(--accent-color);
 }
 .sidebar-item {
 	top: 0;
@@ -33,28 +84,210 @@
 	position: sticky;
 	top: 0;
 }
+
+/* Gallery/Post display styles */
+.gallery .col-lg-4 > div { /* Targeting the direct div child as the card */
+  background-color: var(--background-color);
+  border: 1px solid var(--border-color);
+  border-radius: 0.25rem; /* Standard Bootstrap card radius */
+  padding: var(--spacing-unit);
+  transition: box-shadow 0.3s ease-in-out;
+  height: 100%; /* Make cards in a row equal height if content varies */
+}
+.gallery .col-lg-4 > div:hover {
+  box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.1);
+}
+
+/* Remove excessive margins/padding from nested containers if they are kept */
+.gallery .col-lg-4 > div .container.mb-4 {
+  margin-bottom: 0 !important; /* Override Bootstrap */
+  padding: 0; /* Remove padding if the card itself has padding */
+}
+ .gallery .col-lg-4 > div .container-fluid {
+  padding: 0;
+}
+
+.gallery .col-lg-4 h4 { /* Post title */
+  font-size: 1.25rem;
+  color: var(--primary-color);
+  margin-top: 0; /* Remove default heading margin if card has padding */
+  margin-bottom: calc(var(--spacing-unit) / 2);
+}
+.gallery .col-lg-4 p { /* Post content snippet */
+  font-size: 0.9rem;
+  color: var(--secondary-color);
+  margin-bottom: calc(var(--spacing-unit) / 2);
+}
+.gallery .col-lg-4 hr {
+  border-top: 1px solid var(--border-color);
+  margin-top: calc(var(--spacing-unit) /2);
+  margin-bottom: 0;
+}
+
 .footer {
-   height: 100px;
+   /* height: 100px; */ /* Let content define height */
    left: 0;
    bottom: 0;
    width: 100%;
-   background-color: white;
-   color: white;
+   background-color: var(--light-gray-bg);
+   color: var(--secondary-color); /* Changed to secondary for footer text */
+   padding: calc(var(--spacing-unit) * 1.5) 0;
+   text-align: center; /* Center the links if they are inline-block */
 }
-.footer div{
+.footer div{ /* The flex container */
 	height: 100%;
+  gap: var(--spacing-unit); /* Adds space between flex items (the links) */
 }
 .footer a{
-	padding: 8px 12px;
-	background-color: whitesmoke;
-	color: black;
+	padding: calc(var(--spacing-unit) / 2) var(--spacing-unit);
+	background-color: transparent;
+	color: var(--accent-color);
 	text-decoration: none;
 	display: inline-block;
-	margin: 10px;
+	/* margin: 10px; Removed as per instruction */
 }
 .footer a:hover{
-	background-color:gray;
+	background-color: var(--accent-color);
+  color: var(--background-color);
 }
 .modal-content{
-	border-radius: 0px;
+	border-radius: 0.3rem;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15);
+}
+
+/* Styles for test.html - Story Page */
+
+/* Carousel */
+#carousel .carousel-inner img {
+  max-height: 400px; /* Example max height */
+  object-fit: cover; /* Ensures image covers the area, might crop */
+}
+
+#carousel .carousel-control-prev-icon,
+#carousel .carousel-control-next-icon {
+  background-color: var(--accent-color); /* Example: Make them solid */
+  border-radius: 50%;
+  padding: 10px; /* Adjust size */
+}
+#carousel .carousel-indicators li {
+  background-color: var(--secondary-color);
+}
+#carousel .carousel-indicators .active {
+  background-color: var(--accent-color);
+}
+
+/* Comments Section */
+.col-lg-9 .bg-light.container.mb-3 { /* This targets the comment block */
+  background-color: var(--background-color) !important; /* Override Bootstrap's bg-light if needed */
+  border: 1px solid var(--border-color);
+  border-radius: 0.25rem;
+  padding: var(--spacing-unit);
+  margin-bottom: var(--spacing-unit) !important; /* Consistent spacing */
+}
+.col-lg-9 .bg-light.container.mb-3 h5 { /* Username in comment */
+  font-size: 1rem;
+  font-weight: bold;
+  color: var(--primary-color);
+  margin-bottom: calc(var(--spacing-unit) / 4);
+}
+.col-lg-9 .bg-light.container.mb-3 p { /* Comment text */
+  font-size: 0.9rem;
+  color: var(--secondary-color);
+  margin-bottom: calc(var(--spacing-unit) / 2);
+}
+.col-lg-9 .bg-light.container.mb-3 .text-right a { /* Reply link */
+  color: var(--accent-color);
+  font-size: 0.85rem;
+  text-decoration: none;
+}
+.col-lg-9 .bg-light.container.mb-3 .text-right a:hover {
+  text-decoration: underline;
+}
+
+/* Comment Form */
+/* Assuming .bl-light is a typo and the form is directly within .col-lg-9 or a generic container */
+.col-lg-9 form .btn-primary { /* More specific if needed */
+  background-color: var(--accent-color);
+  border-color: var(--accent-color);
+  color: var(--background-color); /* Ensure text is readable */
+}
+.col-lg-9 form .btn-primary:hover {
+  background-color: var(--accent-color); /* Manual darker shade or just opacity */
+  border-color: var(--accent-color); /* Manual darker shade or just opacity */
+  opacity: 0.85; /* Simpler hover */
+}
+
+/* Sidebar */
+.col-lg-3 > div > h3, /* About h3 */
+.col-lg-3 .sidebar-item > div > h3 { /* Tags h3, Best h3 */
+  font-size: 1.3rem;
+  color: var(--primary-color);
+  margin-bottom: calc(var(--spacing-unit) / 2);
+}
+.col-lg-3 > div > p, /* About paragraph */
+.col-lg-3 .sidebar-item > div > p { /* Best paragraph */
+  font-size: 0.9rem;
+  color: var(--secondary-color);
+  margin-bottom: var(--spacing-unit);
+}
+.col-lg-3 .sidebar-item .tag-link { /* Already styled globally, ensure layout consistency */
+  margin-right: calc(var(--spacing-unit) / 4);
+  margin-bottom: calc(var(--spacing-unit) / 4); /* Consistent with global tag-link margin-bottom */
+}
+
+/* Adjust sticky top based on new navbar height if necessary */
+.make-me-sticky {
+    top: 20px; /* Example: adjust this value as needed */
+}
+
+/* Responsive Adjustments */
+
+/* General Font Size Adjustment for smaller screens */
+@media (max-width: 768px) { /* Target tablets and below */
+  :root {
+    --base-font-size: 15px; /* Slightly smaller base font */
+  }
+  .gallery .col-lg-4 h4, /* Post titles on homepage */
+  .col-lg-9 .bg-light.container.mb-3 h5, /* Comment usernames */
+  .col-lg-3 > div > h3,
+  .col-lg-3 .sidebar-item > div > h3 { /* Sidebar headings */
+    font-size: 1.1rem; /* Adjust heading sizes */
+  }
+}
+
+@media (max-width: 576px) { /* Target mobile phones */
+  :root {
+    --base-font-size: 14px; /* Even smaller for mobile */
+  }
+  .navbar {
+    padding: calc(var(--spacing-unit) / 1.5) var(--spacing-unit);
+  }
+  .gallery .col-lg-4 > div { /* Card padding on mobile */
+    padding: calc(var(--spacing-unit) / 1.5);
+  }
+  #carousel .carousel-inner img {
+    max-height: 250px; /* Reduce max-height for mobile */
+  }
+}
+
+/* Navbar Toggler Icon Color */
+.navbar-toggler {
+  border-color: rgba(0,0,0,0.1); /* Default Bootstrap border color for toggler */
+}
+.navbar-toggler-icon {
+  /* Custom SVG with accent color. URL encoded. */
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(0, 123, 255, 0.8)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+}
+
+
+/* Sidebar stacking and sticky behavior on smaller screens for test.html */
+@media (max-width: 991.98px) { /* Bootstrap 'lg' breakpoint - when sidebar stacks */
+  .make-me-sticky {
+    position: static !important; /* Disable sticky behavior */
+    top: auto !important;
+  }
+  .col-lg-3 { /* The sidebar column */
+    margin-top: calc(var(--spacing-unit) * 2); /* Add some space when it stacks */
+  }
 }

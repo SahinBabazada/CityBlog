@@ -14,7 +14,7 @@
 	<link rel="stylesheet" type="text/css" href="main.css">
 </head>
 <body>
-	<nav class="navbar navbar-expand-lg navbar-light border-bottom mb-4">
+	<nav class="navbar navbar-expand-lg navbar-light mb-4">
 		<a href="#" class="navbar-brand text-center d-block d-lg-none">City</a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
 			menu
@@ -77,6 +77,53 @@
 		document.addEventListener('DOMContentLoaded', function() {
 			const gallery = document.querySelector('.gallery');
 
+			const fallbackMockPosts = [
+			  { title: "Local Delights (Mock Data)", content: "Discover the best food in town, even when the server is offline!" },
+			  { title: "City Parks Guide (Mock Data)", content: "Explore green spaces for relaxation and recreation. This data is loaded locally." },
+			  { title: "Architectural Wonders (Mock Data)", content: "A look at stunning buildings. Displayed from fallback data." }
+			];
+
+			function displayPosts(posts) {
+				gallery.innerHTML = ''; // Clear previous content
+
+				if (!posts || posts.length === 0) {
+					const noPostsElement = document.createElement('p');
+					noPostsElement.className = 'col-12';
+					noPostsElement.textContent = 'No posts to display at the moment.';
+					gallery.appendChild(noPostsElement);
+					return;
+				}
+
+				posts.forEach(post => {
+					const postCol = document.createElement('div');
+					postCol.className = 'col-lg-4 mb-4';
+
+					const postCard = document.createElement('div');
+					// This div will be styled as the card by CSS: .gallery .col-lg-4 > div
+
+					const contentContainer = document.createElement('div');
+					contentContainer.className = 'container mb-4'; // Bootstrap class, might be reset by CSS
+
+					const contentFluid = document.createElement('div');
+					contentFluid.className = 'container-fluid'; // Bootstrap class, might be reset by CSS
+
+					const titleElement = document.createElement('h4');
+					titleElement.textContent = post.title;
+
+					const contentElement = document.createElement('p');
+					contentElement.textContent = post.content;
+
+					contentFluid.appendChild(titleElement);
+					contentFluid.appendChild(contentElement);
+					contentContainer.appendChild(contentFluid);
+					contentContainer.appendChild(document.createElement('hr')); 
+					
+					postCard.appendChild(contentContainer);
+					postCol.appendChild(postCard);
+					gallery.appendChild(postCol);
+				});
+			}
+
 			fetch('/api/posts')
 				.then(response => {
 					if (!response.ok) {
@@ -85,40 +132,22 @@
 					return response.json();
 				})
 				.then(posts => {
-					posts.forEach(post => {
-						const postCol = document.createElement('div');
-						postCol.className = 'col-lg-4 mb-4';
-
-						const postCard = document.createElement('div');
-						// No specific card class, but an inner div to group content as per original structure
-
-						const contentContainer = document.createElement('div');
-						contentContainer.className = 'container mb-4';
-
-						const contentFluid = document.createElement('div');
-						contentFluid.className = 'container-fluid';
-
-						const titleElement = document.createElement('h4');
-						titleElement.textContent = post.title;
-
-						const contentElement = document.createElement('p');
-						contentElement.textContent = post.content;
-
-						contentFluid.appendChild(titleElement);
-						contentFluid.appendChild(contentElement);
-						contentContainer.appendChild(contentFluid);
-						contentContainer.appendChild(document.createElement('hr')); 
-						
-						postCard.appendChild(contentContainer);
-						postCol.appendChild(postCard);
-						gallery.appendChild(postCol);
-					});
+					displayPosts(posts);
 				})
 				.catch(error => {
-					console.error('There has been a problem with your fetch operation:', error);
-					const errorElement = document.createElement('p');
-					errorElement.textContent = 'Failed to load posts. See console for details.';
-					gallery.appendChild(errorElement);
+					console.warn('API fetch failed, loading fallback data:', error);
+					displayPosts(fallbackMockPosts);
+
+					// Optionally, add a small message indicating data is mock.
+					const notice = document.createElement('p');
+					notice.className = 'col-12 text-muted small mt-2';
+					notice.textContent = 'Displaying sample content as the server could not be reached.';
+					// Insert notice after gallery (which is a .row)
+                    // The gallery itself is a .row. Its parent is .container.
+                    // We want to insert the notice after the gallery row, within the same container.
+					if (gallery.parentNode) {
+						gallery.parentNode.insertBefore(notice, gallery.nextSibling);
+					}
 				});
 		});
 	</script>
